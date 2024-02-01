@@ -28,9 +28,27 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             ""id"": ""5ff1aefb-6a21-458d-88e9-67b43a3c3bae"",
             ""actions"": [
                 {
-                    ""name"": ""Movement"",
+                    ""name"": ""MotorControl"",
                     ""type"": ""Button"",
                     ""id"": ""45424c8a-642a-4225-8ef2-c4dc21b8dbb6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Steering"",
+                    ""type"": ""Button"",
+                    ""id"": ""46063cc2-e32c-4099-8fb6-75769a695c08"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HandBrake"",
+                    ""type"": ""Button"",
+                    ""id"": ""b7184592-ae18-485e-abd7-f35715ca595b"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -45,7 +63,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""MotorControl"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -56,7 +74,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""MotorControl"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -67,42 +85,53 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""MotorControl"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""Steering"",
-                    ""id"": ""908a27e5-70f0-4e58-b007-4577d9df983d"",
+                    ""id"": ""88efffdf-eb25-4fdc-97ad-8ec54fbaceb8"",
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""Steering"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": ""negative"",
-                    ""id"": ""27fc3cc5-16e9-420a-8d02-b3588ab1c8e8"",
+                    ""id"": ""7f61d63a-0bfd-4910-b098-2e7619880e1f"",
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""Steering"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""positive"",
-                    ""id"": ""43b4becb-8880-4df3-b27d-3f9519736056"",
+                    ""id"": ""e75db2cf-5994-4af8-95ee-e35edd0886b5"",
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""Steering"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3fc1363c-c6dc-440b-bd37-4bcf5b5e938f"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HandBrake"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -111,7 +140,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
 }");
         // GameplayActionMap
         m_GameplayActionMap = asset.FindActionMap("GameplayActionMap", throwIfNotFound: true);
-        m_GameplayActionMap_Movement = m_GameplayActionMap.FindAction("Movement", throwIfNotFound: true);
+        m_GameplayActionMap_MotorControl = m_GameplayActionMap.FindAction("MotorControl", throwIfNotFound: true);
+        m_GameplayActionMap_Steering = m_GameplayActionMap.FindAction("Steering", throwIfNotFound: true);
+        m_GameplayActionMap_HandBrake = m_GameplayActionMap.FindAction("HandBrake", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -173,12 +204,16 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     // GameplayActionMap
     private readonly InputActionMap m_GameplayActionMap;
     private List<IGameplayActionMapActions> m_GameplayActionMapActionsCallbackInterfaces = new List<IGameplayActionMapActions>();
-    private readonly InputAction m_GameplayActionMap_Movement;
+    private readonly InputAction m_GameplayActionMap_MotorControl;
+    private readonly InputAction m_GameplayActionMap_Steering;
+    private readonly InputAction m_GameplayActionMap_HandBrake;
     public struct GameplayActionMapActions
     {
         private @PlayerInput m_Wrapper;
         public GameplayActionMapActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Movement => m_Wrapper.m_GameplayActionMap_Movement;
+        public InputAction @MotorControl => m_Wrapper.m_GameplayActionMap_MotorControl;
+        public InputAction @Steering => m_Wrapper.m_GameplayActionMap_Steering;
+        public InputAction @HandBrake => m_Wrapper.m_GameplayActionMap_HandBrake;
         public InputActionMap Get() { return m_Wrapper.m_GameplayActionMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -188,16 +223,28 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_GameplayActionMapActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_GameplayActionMapActionsCallbackInterfaces.Add(instance);
-            @Movement.started += instance.OnMovement;
-            @Movement.performed += instance.OnMovement;
-            @Movement.canceled += instance.OnMovement;
+            @MotorControl.started += instance.OnMotorControl;
+            @MotorControl.performed += instance.OnMotorControl;
+            @MotorControl.canceled += instance.OnMotorControl;
+            @Steering.started += instance.OnSteering;
+            @Steering.performed += instance.OnSteering;
+            @Steering.canceled += instance.OnSteering;
+            @HandBrake.started += instance.OnHandBrake;
+            @HandBrake.performed += instance.OnHandBrake;
+            @HandBrake.canceled += instance.OnHandBrake;
         }
 
         private void UnregisterCallbacks(IGameplayActionMapActions instance)
         {
-            @Movement.started -= instance.OnMovement;
-            @Movement.performed -= instance.OnMovement;
-            @Movement.canceled -= instance.OnMovement;
+            @MotorControl.started -= instance.OnMotorControl;
+            @MotorControl.performed -= instance.OnMotorControl;
+            @MotorControl.canceled -= instance.OnMotorControl;
+            @Steering.started -= instance.OnSteering;
+            @Steering.performed -= instance.OnSteering;
+            @Steering.canceled -= instance.OnSteering;
+            @HandBrake.started -= instance.OnHandBrake;
+            @HandBrake.performed -= instance.OnHandBrake;
+            @HandBrake.canceled -= instance.OnHandBrake;
         }
 
         public void RemoveCallbacks(IGameplayActionMapActions instance)
@@ -217,6 +264,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     public GameplayActionMapActions @GameplayActionMap => new GameplayActionMapActions(this);
     public interface IGameplayActionMapActions
     {
-        void OnMovement(InputAction.CallbackContext context);
+        void OnMotorControl(InputAction.CallbackContext context);
+        void OnSteering(InputAction.CallbackContext context);
+        void OnHandBrake(InputAction.CallbackContext context);
     }
 }

@@ -2,20 +2,25 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 namespace Infrastructure
 {
     public class SceneLoader
     {
-        private readonly ICoroutineRunner _coroutineRunner;
+        private ICoroutineRunner _coroutineRunner;
 
-        public SceneLoader(ICoroutineRunner coroutineRunner)
+        [Inject]
+        public SceneLoader(IGameFactory gameFactory)
         {
-            _coroutineRunner = coroutineRunner;
+            _coroutineRunner = gameFactory.CreateCoroutineRunner();
         }
 
         public void Load(string name, Action onLoaded = null)
-            => _coroutineRunner.StartCoroutine(LoadScene(name, onLoaded));
+        {
+            _coroutineRunner.StartCoroutine(LoadScene(name, onLoaded));
+        }
+            
 
         private IEnumerator LoadScene(string name, Action onLoaded = null)
         {

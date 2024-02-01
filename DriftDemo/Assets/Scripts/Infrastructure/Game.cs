@@ -1,14 +1,17 @@
 ﻿using Logic;
 using UnityEngine;
+using Zenject;
 
 namespace Infrastructure
 {
     public class Game
     {
         private GameStateMachine _gameStateMachine;
-        public Game(ICoroutineRunner coroutineRunner, LoadingCurtain loadingCurtain)
+
+        [Inject]
+        public Game(GameStateMachine gameStateMachine)
         {
-            _gameStateMachine = new GameStateMachine(new SceneLoader(coroutineRunner), loadingCurtain);
+            _gameStateMachine = gameStateMachine;
         }
 
         public GameStateMachine GameStateMachine => _gameStateMachine;

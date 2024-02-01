@@ -8,12 +8,14 @@ namespace Infrastructure
         private readonly GameStateMachine _gameStateMachine;
         private readonly SceneLoader _sceneLoader;
         private readonly LoadingCurtain _loadingCurtain;
-        private const string CarPath = "Cars/DefaultCar";
-        public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, LoadingCurtain loadingCurtain) 
+        private readonly IGameFactory _gameFactory;
+
+        public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, IGameFactory gameFactory) 
         {
             _gameStateMachine = gameStateMachine;
             _sceneLoader = sceneLoader;
-            _loadingCurtain = loadingCurtain;
+            _loadingCurtain = gameFactory.CreateLoadingCurtain();
+            _gameFactory = gameFactory;
         }
 
         public void Enter(string sceneName)
@@ -29,7 +31,7 @@ namespace Infrastructure
 
         private void OnLoaded() 
         {
-            var newCar = Instantiate(CarPath);
+            var newCar = _gameFactory.CreateCar();
 
             _gameStateMachine.Enter<GameLoopState>();
         }
