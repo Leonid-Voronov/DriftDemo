@@ -8,14 +8,12 @@ namespace Infrastructure
         private readonly GameStateMachine _gameStateMachine;
         private readonly SceneLoader _sceneLoader;
         private readonly LoadingCurtain _loadingCurtain;
-        private readonly IGameFactory _gameFactory;
 
         public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, IGameFactory gameFactory) 
         {
             _gameStateMachine = gameStateMachine;
             _sceneLoader = sceneLoader;
             _loadingCurtain = gameFactory.CreateLoadingCurtain();
-            _gameFactory = gameFactory;
         }
 
         public void Enter(string sceneName)
@@ -31,15 +29,7 @@ namespace Infrastructure
 
         private void OnLoaded() 
         {
-            var newCar = _gameFactory.CreateCar();
-
             _gameStateMachine.Enter<GameLoopState>();
-        }
-
-        private GameObject Instantiate(string path)
-        {
-            var carPrefab = Resources.Load<GameObject>(path);
-            return Object.Instantiate(carPrefab);
         }
     }
 }

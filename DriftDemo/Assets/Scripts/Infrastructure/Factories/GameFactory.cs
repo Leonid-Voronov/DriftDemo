@@ -8,8 +8,8 @@ namespace Infrastructure
     {
         private const string CoroutineRunnerPath = "CoroutineRunner";
         private const string LoadingCurtainPath = "LoadingCurtain";
-        private const string CarPath = "Cars/DefaultCar";
         private DiContainer _diContainer;
+        [Inject]
         public GameFactory(DiContainer diContainer)
         {
             _diContainer = diContainer;
@@ -17,7 +17,6 @@ namespace Infrastructure
 
         public ICoroutineRunner CreateCoroutineRunner() => Create(CoroutineRunnerPath).GetComponent<CoroutineRunner>();
         public LoadingCurtain CreateLoadingCurtain() => Create(LoadingCurtainPath).GetComponent<LoadingCurtain>();
-        public GameObject CreateCar() => Create(CarPath);
 
         private GameObject Create(string path)
         {

@@ -8,6 +8,7 @@ namespace Infrastructure
     {
         public override void InstallBindings()
         {
+            InstallInfrastructureBindings();
             InstallInputBindings();
         }
 
@@ -18,6 +19,13 @@ namespace Infrastructure
                 .AsSingle();
 
             Container.BindInterfacesTo<InputService>()
+                .AsSingle();
+        }
+
+        private void InstallInfrastructureBindings()
+        {
+            Container.Bind<IGameplayFactory>()
+                .To<GameplayFactory>()
                 .AsSingle();
         }
     }

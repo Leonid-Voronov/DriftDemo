@@ -7,7 +7,6 @@ namespace Infrastructure
     {
         ICoroutineRunner CreateCoroutineRunner();
         LoadingCurtain CreateLoadingCurtain();
-        GameObject CreateCar();
     }
 }
 
