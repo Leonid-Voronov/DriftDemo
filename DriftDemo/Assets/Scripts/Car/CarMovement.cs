@@ -10,6 +10,7 @@ namespace Car
     {
         [Header("Links")]
         [SerializeField] private CarStatsSO _carStats;
+        [SerializeField] private Rigidbody _rb;
 
         [Header("Wheel transforms")]
         [SerializeField] private Transform _frontLeftTransform;
@@ -24,11 +25,13 @@ namespace Car
         [SerializeField] private WheelCollider _rearRightCollider;
         private Dictionary<Transform, WheelCollider> _wheelColliders;
         private IInputService _inputService;
+        private HudMediator _hudMediator;
 
         [Inject]
-        public void Construct(IInputService inputService)
+        public void Construct(IInputService inputService, HudMediator hudMediator)
         {
             _inputService = inputService;
+            _hudMediator = hudMediator;
         }
 
         private void Start()
@@ -47,12 +50,13 @@ namespace Car
             HandleMotor();
             HandleSteering();
             UpdateWheels();
+            _hudMediator.ShowSpeed(_rb.velocity.magnitude * 3.6f);
         }
 
         private void HandleMotor()
         {
-            ApplyTorqueToWheel(_frontLeftCollider);
-            ApplyTorqueToWheel(_frontRightCollider);
+            ApplyTorqueToWheel(_rearLeftCollider);
+            ApplyTorqueToWheel(_rearRightCollider);
 
             float currentBreakForce = _inputService.HandbrakeInput ? _carStats.BreakForce : 0f; 
             ApplyBreaking(currentBreakForce);
@@ -66,8 +70,23 @@ namespace Car
 
         private void ApplyBreaking(float breakForce)
         {
-            List<WheelCollider> wheelCollidersList = _wheelColliders.Values.ToList();
-            wheelCollidersList.ForEach(wheelCollider => wheelCollider.brakeTorque = breakForce);
+            _rearLeftCollider.brakeTorque = breakForce;
+            _rearRightCollider.brakeTorque = breakForce;
+
+            ApplyDriftingStifness(_rearLeftCollider);
+            ApplyDriftingStifness(_rearRightCollider);
+        }
+
+        private void ApplyDriftingStifness(WheelCollider wheelCollider)
+        {
+            float velocity = _rb.velocity.magnitude;
+            WheelFrictionCurve forwardFriction = wheelCollider.forwardFriction;
+            forwardFriction.stiffness = _inputService.HandbrakeInput ? Mathf.SmoothDamp(forwardFriction.stiffness, .5f, ref velocity, Time.deltaTime) : 1f;
+            wheelCollider.forwardFriction = forwardFriction;
+
+            WheelFrictionCurve sidewaysFriction = wheelCollider.sidewaysFriction;
+            sidewaysFriction.stiffness = _inputService.HandbrakeInput ? Mathf.SmoothDamp(sidewaysFriction.stiffness, .5f, ref velocity, Time.deltaTime) : 1f;
+            wheelCollider.sidewaysFriction = sidewaysFriction;
         }
 
         private void UpdateWheels()
@@ -76,10 +95,10 @@ namespace Car
                 UpdateWheel(pair.Value, pair.Key);
         }
 
-        private void ApplyTorqueToWheel(WheelCollider wheelCollider)
+        private void ApplyTorqueToWheel(WheelCollider wheelCollider) 
             => wheelCollider.motorTorque = _inputService.TreadleInput * _carStats.MotorForce;
 
-        private void ApplySteeringToWheel(WheelCollider wheelCollider)
+        private void ApplySteeringToWheel(WheelCollider wheelCollider) 
             => wheelCollider.steerAngle = _inputService.SteeringInput * _carStats.MaxSteerAngle;
 
         private void UpdateWheel(WheelCollider wheelCollider, Transform wheelTransform)
