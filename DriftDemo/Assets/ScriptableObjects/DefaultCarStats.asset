@@ -16,6 +16,8 @@ MonoBehaviour:
   _breakForce: 5000
   _maxSteerAngle: 35
   _maxSpeed: 120
-  _minimumDriftAngle: 0
-  _minimumDriftSpeed: 0
-  _driftDelay: 0
+  _naturalSlowdownPerSecond: 0.998
+  _targetStiffness: 0.5
+  _minimumDriftAngle: 10
+  _minimumDriftSpeed: 10
+  _driftDelay: 0.2

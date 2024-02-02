@@ -595,6 +595,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _carStats: {fileID: 11400000, guid: 764593c9b3d90a840afb514becd231e5, type: 2}
   _rb: {fileID: 7495443279060062592}
+  _analyzer: {fileID: 7743991531177789042}
   _frontLeftTransform: {fileID: 3794951908810334882}
   _frontRightTransform: {fileID: 948405438201742482}
   _rearLeftTransform: {fileID: 9188640840458259854}
@@ -616,6 +617,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rb: {fileID: 7495443279060062592}
+  _carMovement: {fileID: 2439868315446713482}
+  IsDrifting: 1
 --- !u!1 &3962000127133956386
 GameObject:
   m_ObjectHideFlags: 0

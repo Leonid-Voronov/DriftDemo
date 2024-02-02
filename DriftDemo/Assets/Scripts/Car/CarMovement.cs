@@ -11,6 +11,7 @@ namespace Car
         [Header("Links")]
         [SerializeField] private CarStatsSO _carStats;
         [SerializeField] private Rigidbody _rb;
+        [SerializeField] private DriftAnalyzer _analyzer;
 
         [Header("Wheel transforms")]
         [SerializeField] private Transform _frontLeftTransform;
@@ -26,6 +27,10 @@ namespace Car
         private Dictionary<Transform, WheelCollider> _wheelColliders;
         private IInputService _inputService;
         private HudMediator _hudMediator;
+
+        private const float MpsToKph = 3.6f;
+        public CarStatsSO CarStats => _carStats;
+
 
         [Inject]
         public void Construct(IInputService inputService, HudMediator hudMediator)
@@ -50,7 +55,8 @@ namespace Car
             HandleMotor();
             HandleSteering();
             UpdateWheels();
-            _hudMediator.ShowSpeed(_rb.velocity.magnitude * 3.6f);
+            ControlSpeed();
+            _hudMediator.ShowSpeed(_rb.velocity.magnitude * MpsToKph);
         }
 
         private void HandleMotor()
@@ -73,20 +79,14 @@ namespace Car
             _rearLeftCollider.brakeTorque = breakForce;
             _rearRightCollider.brakeTorque = breakForce;
 
-            ApplyDriftingStifness(_rearLeftCollider);
-            ApplyDriftingStifness(_rearRightCollider);
+            ApplyDriftingStiffness(_rearLeftCollider);
+            ApplyDriftingStiffness(_rearRightCollider);
         }
 
-        private void ApplyDriftingStifness(WheelCollider wheelCollider)
+        private void ApplyDriftingStiffness(WheelCollider wheelCollider)
         {
-            float velocity = _rb.velocity.magnitude;
-            WheelFrictionCurve forwardFriction = wheelCollider.forwardFriction;
-            forwardFriction.stiffness = _inputService.HandbrakeInput ? Mathf.SmoothDamp(forwardFriction.stiffness, .5f, ref velocity, Time.deltaTime) : 1f;
-            wheelCollider.forwardFriction = forwardFriction;
-
-            WheelFrictionCurve sidewaysFriction = wheelCollider.sidewaysFriction;
-            sidewaysFriction.stiffness = _inputService.HandbrakeInput ? Mathf.SmoothDamp(sidewaysFriction.stiffness, .5f, ref velocity, Time.deltaTime) : 1f;
-            wheelCollider.sidewaysFriction = sidewaysFriction;
+            wheelCollider.forwardFriction = RecalculateFriction(wheelCollider.forwardFriction);
+            wheelCollider.sidewaysFriction = RecalculateFriction(wheelCollider.sidewaysFriction);
         }
 
         private void UpdateWheels()
@@ -108,6 +108,31 @@ namespace Car
             wheelCollider.GetWorldPose(out position, out rotation);
             wheelTransform.position = position;
             wheelTransform.rotation = rotation;
+        }
+
+        private WheelFrictionCurve RecalculateFriction(WheelFrictionCurve curve)
+        {
+            float velocity = _rb.velocity.magnitude;
+
+            if (_inputService.HandbrakeInput)
+                curve.stiffness = Mathf.SmoothDamp(curve.stiffness, _carStats.TargetStiffness, ref velocity, Time.fixedDeltaTime);
+            else if (_analyzer.IsDrifting)
+                curve.stiffness = Mathf.SmoothDamp(curve.stiffness, .85f, ref velocity, Time.fixedDeltaTime);
+            else
+                curve.stiffness = 1f;
+
+            return curve;
+        }
+
+        private void ControlSpeed()
+        {
+            if (_rb.velocity.magnitude * MpsToKph > _carStats.MaxSpeed)
+                _rb.velocity = (_rb.velocity.normalized * _carStats.MaxSpeed) / MpsToKph;
+
+            if (_inputService.TreadleInput == 0)
+            {
+                _rb.velocity *= _carStats.NaturalSlowdownPerSecond;
+            }
         }
     }
 }
