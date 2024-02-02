@@ -37,7 +37,6 @@ namespace Car
         {
             float speed = _rb.velocity.magnitude;
             float driftAngle = Vector3.Angle(_rb.transform.forward, (_rb.velocity + _rb.transform.forward).normalized);
-            //Debug.Log(driftAngle);
 
             if (driftAngle > MaxDriftAngle)
                 driftAngle = 0f;
@@ -53,14 +52,16 @@ namespace Car
             {
                 StopDriftCounting();
             }
-                
 
             if (_drifting)
             {
-                _currentScore += Time.deltaTime * driftAngle * _driftScorePerSecond;
+                float scoreDelta = Time.deltaTime * driftAngle * _driftScorePerSecond;
+                _currentScore += scoreDelta;
                 _driftScorePerSecond += Time.deltaTime;
+                _sessionScore += scoreDelta;
+                _hudMediator.DisplayCurrentScore(_currentScore);
+                _hudMediator.DisplaySessionScore(_sessionScore);
             }
-                
         }
 
         private IEnumerator StartDriftCoroutine()
@@ -72,6 +73,7 @@ namespace Car
 
         public void StopDriftCounting()
         {
+            _currentScore = 0f;
             _drifting = false;
             _hudMediator.HideDriftPanel();
         }
