@@ -14,7 +14,7 @@ namespace Infrastructure
         public void Enter()
         {
             RegisterServices();
-            _sceneLoader.Load(InitialSceneName, onLoaded: EnterLoadLevel);
+            _sceneLoader.Load(InitialSceneName, onLoaded: EnterLoadProgressState);
         }
 
         public void Exit()
@@ -22,7 +22,7 @@ namespace Infrastructure
             
         }
 
-        private void EnterLoadLevel() => _gameStateMachine.Enter<LoadLevelState, string>("GameplayScene");
+        private void EnterLoadProgressState() => _gameStateMachine.Enter<LoadProgressState>();
 
         private void RegisterServices()
         {

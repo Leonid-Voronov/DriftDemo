@@ -1,3 +1,5 @@
+using Logic;
+using Services;
 using UnityEngine;
 using Zenject;
 
@@ -8,6 +10,8 @@ namespace Infrastructure
         public override void InstallBindings()
         {
             InstallInfrastructureBindings();
+            InstallProgressBindings();
+            InstallLogicBindings();
         }
 
         private void InstallInfrastructureBindings()
@@ -26,6 +30,23 @@ namespace Infrastructure
 
             Container.Bind<IGameFactory>()
                 .To<GameFactory>()
+                .AsSingle();
+        }
+
+        private void InstallProgressBindings()
+        {
+            Container.Bind<ILocalStorageService>()
+                .To<LocalStorageService>()
+                .AsSingle();
+
+            Container.Bind<ICurrencyService>()
+                .To<CurrencyService>()
+                .AsSingle();
+        }
+
+        private void InstallLogicBindings()
+        {
+            Container.BindInterfacesAndSelfTo<SaveTrigger>()
                 .AsSingle();
         }
     }

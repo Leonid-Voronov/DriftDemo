@@ -1,4 +1,5 @@
 using Logic;
+using Services;
 using System;
 using System.Collections.Generic;
 using Zenject;
@@ -11,11 +12,12 @@ namespace Infrastructure
         private IExitableState _activeState;
 
         [Inject]
-        public GameStateMachine(SceneLoader sceneLoader, IGameFactory gameFactory)
+        public GameStateMachine(SceneLoader sceneLoader, IGameFactory gameFactory, ILocalStorageService localStorageService)
         {
             _states = new Dictionary<Type, IExitableState>()
             {
                 [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader),
+                [typeof(LoadProgressState)] = new LoadProgressState(this, localStorageService),
                 [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, gameFactory),
                 [typeof(GameLoopState)] = new GameLoopState(this),
             };
