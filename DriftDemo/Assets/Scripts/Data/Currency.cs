@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace Data
 {
     public class Currency : ISavedProgress
@@ -21,15 +19,9 @@ namespace Data
             }
         }
 
-        public void LoadProgress(PlayerData playerData)
-        {
-            //_cashAmount = playerData.CashAmount;
-        }
+        public void LoadProgress(PlayerData playerData) => _cashAmount = playerData.CashAmount;
 
-        public void UpdateProgress(PlayerData playerData)
-        {
-           // playerData.CashAmount = _cashAmount;
-        }
+        public void UpdateProgress(PlayerData playerData) => playerData.CashAmount = _cashAmount;
     }
 }
 

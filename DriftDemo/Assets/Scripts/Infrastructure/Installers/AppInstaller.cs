@@ -14,6 +14,7 @@ namespace Infrastructure
             InstallProgressBindings();
             InstallLogicBindings();
             InstallServiceBindings();
+            InstallExtensionBindgings();
         }
 
         private void InstallInfrastructureBindings()
@@ -60,6 +61,13 @@ namespace Infrastructure
 
             Container.Bind<IAppExitService>()
                 .To<AppExitService>()
+                .AsSingle();
+        }
+
+        private void InstallExtensionBindgings()
+        {
+            Container.Bind<IEnumStringConvertService>()
+                .To<EnumStringConvertService>()
                 .AsSingle();
         }
     }

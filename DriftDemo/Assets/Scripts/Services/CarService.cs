@@ -18,12 +18,11 @@ namespace Services
         {
             _allCars = new Dictionary<CarName, PurchasedCar>()
             {
-                [CarName.Car1] = new PurchasedCar(_car1Path, _car1Cost, 0, CarName.Car1),
-                [CarName.Car2] = new PurchasedCar(_car2Path, _car2Cost, 1, CarName.Car2)
+                [CarName.Car1] = new PurchasedCar(_car1Path, _car1Cost, CarName.Car1),
+                [CarName.Car2] = new PurchasedCar(_car2Path, _car2Cost, CarName.Car2)
             };
         }
 
         public PurchasedCar GetPurchasedCar(CarName carName) => _allCars[carName];
-        public PurchasedCar GetPurchasedCar(int index) => _allCars.Values.Where(car => car.PlayerDataIndex == index).First();
     }
 }

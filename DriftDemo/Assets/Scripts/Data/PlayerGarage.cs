@@ -11,17 +11,20 @@ namespace Data
         private List<PurchasedCar> _purchasedCars = new List<PurchasedCar>();
         private Currency _currency;
         private ICarService _carService;
+        private PurchasedCar _activeCar;
 
         public PlayerGarage(IPlayerDataService playerDataService, ICarService carService)
         {
             _currency = playerDataService.Currency;
             _carService = carService;
+            
         }
 
         public List<PurchasedCar> PurchasedCars => _purchasedCars;
         public void LoadProgress(PlayerData playerData)
         {
             _purchasedCars = playerData.PurchasedCars;
+            _activeCar = _purchasedCars.FirstOrDefault();
         }
 
         public void UpdateProgress(PlayerData playerData)
@@ -44,6 +47,8 @@ namespace Data
             }
         }
 
+        public PurchasedCar ActiveCar => _activeCar;
+        public void ChangeActiveCar(CarName carName) => _activeCar = _purchasedCars.Where(car => car.Name == carName).FirstOrDefault();
         public bool IsCarPurchased(CarName carName) => _purchasedCars.Where(car => car.Name == carName).Count() != 0;
     }
 

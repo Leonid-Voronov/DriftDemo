@@ -6,6 +6,7 @@ namespace Data
     [System.Serializable]
     public class PlayerData
     {
+        public float CashAmount { get; set; }
         public List<PurchasedCar> PurchasedCars { get; set; }
 
         public PlayerData(ICarService carService, bool calledFromNew = false)
@@ -15,7 +16,7 @@ namespace Data
 
             PurchasedCars = new List<PurchasedCar>()
             {
-                carService.GetPurchasedCar(CarName.Car1)
+                carService.GetPurchasedCar(CarName.Car1),
             };
         }
     }
