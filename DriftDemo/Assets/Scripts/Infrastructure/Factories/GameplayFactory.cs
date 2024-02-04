@@ -1,4 +1,5 @@
-﻿using Data;
+﻿using Car;
+using Data;
 using Services;
 using UnityEngine;
 using Zenject;
@@ -9,14 +10,22 @@ namespace Infrastructure
     {
         private DiContainer _diContainer;
         private PlayerGarage _playerGarage;
+        private ICarPaintingService _carPaintingService;
+        
         [Inject]
-        public GameplayFactory(DiContainer diContainer, IPlayerDataService playerDataService) 
+        public GameplayFactory(DiContainer diContainer, IPlayerDataService playerDataService, ICarPaintingService carPaintingService) 
         {
             _diContainer = diContainer;
             _playerGarage = playerDataService.PlayerGarage;
+            _carPaintingService = carPaintingService;
         }
 
-        public GameObject CreateCar() => Create(_playerGarage.ActiveCar.PrefabPath);
+        public GameObject CreateCar()
+        {
+            GameObject car = Create(_playerGarage.ActiveCar.PrefabPath);
+            _carPaintingService.PaintCar(car);
+            return car;
+        }
 
         private GameObject Create(string path)
         {

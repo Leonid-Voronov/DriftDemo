@@ -19,8 +19,6 @@ namespace Data
             _carService = carService;
             
         }
-
-        public List<PurchasedCar> PurchasedCars => _purchasedCars;
         public void LoadProgress(PlayerData playerData)
         {
             _purchasedCars = playerData.PurchasedCars;
@@ -50,6 +48,7 @@ namespace Data
         public PurchasedCar ActiveCar => _activeCar;
         public void ChangeActiveCar(CarName carName) => _activeCar = _purchasedCars.Where(car => car.Name == carName).FirstOrDefault();
         public bool IsCarPurchased(CarName carName) => _purchasedCars.Where(car => car.Name == carName).Count() != 0;
+        public PurchasedCar GetPurchasedCar(CarName carName) => _purchasedCars.Where(car => car.Name == carName).FirstOrDefault();
     }
 
     public enum CarName

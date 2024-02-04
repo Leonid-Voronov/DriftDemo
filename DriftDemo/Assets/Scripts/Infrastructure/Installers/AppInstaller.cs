@@ -1,3 +1,4 @@
+using Car;
 using Data;
 using Logic;
 using Services;
@@ -8,6 +9,8 @@ namespace Infrastructure
 {
     public class AppInstaller : MonoInstaller
     {
+        [SerializeField] private CarsMaterialsHolderSO _carsMaterialsHolderSO;
+
         public override void InstallBindings()
         {
             InstallInfrastructureBindings();
@@ -15,6 +18,7 @@ namespace Infrastructure
             InstallLogicBindings();
             InstallServiceBindings();
             InstallExtensionBindgings();
+            InstallDataBindings();
         }
 
         private void InstallInfrastructureBindings()
@@ -62,12 +66,23 @@ namespace Infrastructure
             Container.Bind<IAppExitService>()
                 .To<AppExitService>()
                 .AsSingle();
+
+            Container.Bind<ICarPaintingService>()
+                .To<CarPaintingService>()
+                .AsSingle();
         }
 
         private void InstallExtensionBindgings()
         {
-            Container.Bind<IEnumStringConvertService>()
-                .To<EnumStringConvertService>()
+            Container.Bind<IConvertService>()
+                .To<ConvertService>()
+                .AsSingle();
+        }
+
+        private void InstallDataBindings()
+        {
+            Container.Bind<CarsMaterialsHolderSO>()
+                .FromInstance(_carsMaterialsHolderSO)
                 .AsSingle();
         }
     }

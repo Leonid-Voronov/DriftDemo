@@ -3,7 +3,6 @@ using Infrastructure;
 using UnityEngine;
 using Zenject;
 using Newtonsoft.Json;
-using System.Linq;
 
 namespace Services
 {
@@ -32,7 +31,8 @@ namespace Services
 
         public PlayerData Load()
         {
-            _playerData = JsonConvert.DeserializeObject<PlayerData>(PlayerPrefs.GetString(ProgressKey)) ?? new PlayerData(_carService, calledFromNew: true);
+            _playerData = JsonConvert.DeserializeObject<PlayerData>(PlayerPrefs.GetString(ProgressKey)) ?? 
+                new PlayerData(_carService, calledFromNew: true);
             _gameFactory.ProgressObjects.ForEach(obj => obj.LoadProgress(_playerData));
             return _playerData;
         }

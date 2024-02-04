@@ -74,3 +74,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9476b5979162bb7428bf9ae12e23310f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _carsMaterialsHolderSO: {fileID: 11400000, guid: 072a01c1b0cbf4b4c9fbd22910b251c7, type: 2}

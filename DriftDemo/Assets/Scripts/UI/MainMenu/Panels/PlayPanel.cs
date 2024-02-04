@@ -22,13 +22,13 @@ namespace UI.MainMenu
         private List<string> _trackNames;
 
         [Inject]
-        public void Construct(GameStateMachine gameStateMachine, IEnumStringConvertService enumStringConvertService, IPlayerDataService playerDataService)
+        public void Construct(GameStateMachine gameStateMachine, IConvertService enumStringConvertService, IPlayerDataService playerDataService)
         {
             _gameStateMachine = gameStateMachine;
             _playerDataService = playerDataService;
             FillLists();
             List<CarName> purchasedCarNames = _carNames.Where(c => _playerDataService.PlayerGarage.IsCarPurchased(c)).ToList();
-            AddOptionsToDropdown(_carDropdown, enumStringConvertService.Convert(purchasedCarNames));
+            AddOptionsToDropdown(_carDropdown, enumStringConvertService.ConvertEnumToString(purchasedCarNames));
             AddOptionsToDropdown(_mapDropdown, _trackNames);
         }
 
