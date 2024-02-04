@@ -3,6 +3,7 @@ using UnityEngine;
 using Logic;
 using Data;
 using System.Collections.Generic;
+using Services;
 
 namespace Infrastructure
 {
@@ -13,11 +14,13 @@ namespace Infrastructure
         private DiContainer _diContainer;
 
         private List<ISavedProgress> _progressObjects = new List<ISavedProgress>();
+        private ICarService _carService;
 
         [Inject]
-        public GameFactory(DiContainer diContainer)
+        public GameFactory(DiContainer diContainer, ICarService carService)
         {
             _diContainer = diContainer;
+            _carService = carService;
         }
         public Currency CreateCurrency()
         {
@@ -33,6 +36,13 @@ namespace Infrastructure
         {
             Object emptyPrefab = Resources.Load(path);
             return _diContainer.InstantiatePrefab(emptyPrefab);
+        }
+
+        public PlayerGarage CreatePlayerGarage(IPlayerDataService playerDataService)
+        {
+            PlayerGarage newGarage = new PlayerGarage(playerDataService, _carService);
+            _progressObjects.Add(newGarage);
+            return newGarage;
         }
 
         public List<ISavedProgress> ProgressObjects => _progressObjects;

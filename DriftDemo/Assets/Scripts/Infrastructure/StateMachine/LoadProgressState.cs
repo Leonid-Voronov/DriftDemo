@@ -17,7 +17,7 @@ namespace Infrastructure
         public void Enter()
         {
             _localStorageService.Load();
-            _gameStateMachine.Enter<LoadLevelState, string>("GameplayScene");
+            _gameStateMachine.Enter<LoadLevelState, string>("MainMenuScene");
         }
 
         public void Exit()

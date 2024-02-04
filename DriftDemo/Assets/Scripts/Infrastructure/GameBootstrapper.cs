@@ -13,7 +13,7 @@ namespace Infrastructure
             _game = game;
         }
 
-        private void Awake()
+        private void Start()
         {
             _game.GameStateMachine.Enter<BootstrapState>();
             DontDestroyOnLoad(this);

@@ -2,8 +2,9 @@
 
 namespace Services
 {
-    public interface ICurrencyService
+    public interface IPlayerDataService
     {
         Currency Currency { get; }
+        PlayerGarage PlayerGarage { get; }
     }
 }

@@ -1,3 +1,4 @@
+using Data;
 using Logic;
 using Services;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace Infrastructure
             InstallInfrastructureBindings();
             InstallProgressBindings();
             InstallLogicBindings();
+            InstallServiceBindings();
         }
 
         private void InstallInfrastructureBindings()
@@ -39,14 +41,25 @@ namespace Infrastructure
                 .To<LocalStorageService>()
                 .AsSingle();
 
-            Container.Bind<ICurrencyService>()
-                .To<CurrencyService>()
-                .AsSingle();
+            Container.Bind<IPlayerDataService>()
+                .To<PlayerDataService>()
+                .AsSingle().NonLazy();
         }
 
         private void InstallLogicBindings()
         {
             Container.BindInterfacesAndSelfTo<SaveTrigger>()
+                .AsSingle();
+        }
+
+        private void InstallServiceBindings()
+        {
+            Container.Bind<ICarService>()
+                .To<CarService>()
+                .AsSingle();
+
+            Container.Bind<IAppExitService>()
+                .To<AppExitService>()
                 .AsSingle();
         }
     }

@@ -4,7 +4,7 @@ namespace Data
 {
     public class Currency : ISavedProgress
     {
-        private float _cashAmount;
+        private float _cashAmount = 0f;
 
         public void AddCash(float amount) => _cashAmount += amount;
 
@@ -21,8 +21,15 @@ namespace Data
             }
         }
 
-        public void LoadProgress(PlayerData playerData) => _cashAmount = playerData.CashAmount;
-        public void UpdateProgress(PlayerData playerData) => playerData.CashAmount = _cashAmount;
+        public void LoadProgress(PlayerData playerData)
+        {
+            //_cashAmount = playerData.CashAmount;
+        }
+
+        public void UpdateProgress(PlayerData playerData)
+        {
+           // playerData.CashAmount = _cashAmount;
+        }
     }
 }
 
