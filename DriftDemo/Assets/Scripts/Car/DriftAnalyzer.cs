@@ -1,3 +1,4 @@
+using Services;
 using System.Collections;
 using UnityEngine;
 using Zenject;
@@ -10,10 +11,8 @@ namespace Car
         [SerializeField] private Rigidbody _rb;
         [SerializeField] private CarMovement _carMovement;
         private HudMediator _hudMediator;
+        private IScoreService _scoreService;
         private CarStatsSO _carStats;
-        private float _sessionScore = 0f;
-        private float _currentScore = 0f;
-        private float _currentDriftAngle = 0f;
         private bool _drifting = false;
         private float _driftScorePerSecond = 1f;
 
@@ -21,9 +20,10 @@ namespace Car
         public bool IsDrifting => _drifting;
 
         [Inject]
-        public void Construct(HudMediator hudMediator)
+        public void Construct(HudMediator hudMediator, IScoreService scoreService)
         {
             _hudMediator = hudMediator;
+            _scoreService = scoreService;
         }
 
         private void OnEnable() => _carStats = _carMovement.CarStats;
@@ -56,11 +56,8 @@ namespace Car
             if (_drifting)
             {
                 float scoreDelta = Time.deltaTime * driftAngle * _driftScorePerSecond;
-                _currentScore += scoreDelta;
                 _driftScorePerSecond += Time.deltaTime;
-                _sessionScore += scoreDelta;
-                _hudMediator.DisplayCurrentScore(_currentScore);
-                _hudMediator.DisplaySessionScore(_sessionScore);
+                _scoreService.AddScore(scoreDelta);
             }
         }
 
@@ -73,7 +70,7 @@ namespace Car
 
         public void StopDriftCounting()
         {
-            _currentScore = 0f;
+            _scoreService.ResetCurrentScore();
             _drifting = false;
             _hudMediator.HideDriftPanel();
         }

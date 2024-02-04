@@ -7,6 +7,8 @@ namespace Services.Input
         float TreadleInput { get; }
         float SteeringInput { get; }
         bool HandbrakeInput { get; }
+
+        void DisableInput();
     }
 }
 

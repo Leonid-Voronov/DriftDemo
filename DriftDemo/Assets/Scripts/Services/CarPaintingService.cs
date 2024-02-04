@@ -23,7 +23,6 @@ namespace Services
             List<Material> materials = new List<Material>(carLinks.MeshRenderer.materials);
             materials[0] = newMaterial;
             carLinks.MeshRenderer.materials = materials.ToArray();
-            
         }
     }
 }

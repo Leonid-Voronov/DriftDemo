@@ -3,6 +3,7 @@ using Zenject;
 using UnityEngine;
 using Cinemachine;
 using Services.Camera;
+using Services;
 
 namespace Infrastructure
 {
@@ -16,6 +17,7 @@ namespace Infrastructure
             InstallInputBindings();
             InstallCameraBindings();
             InstallHudBindings();
+            InstallServiceBindings();
         }
 
         private void InstallInputBindings()
@@ -50,6 +52,12 @@ namespace Infrastructure
         {
             Container.Bind<HudMediator>()
                 .FromInstance(_hudMediator) 
+                .AsSingle();
+        }
+
+        private void InstallServiceBindings()
+        {
+            Container.BindInterfacesTo<ScoreService>()
                 .AsSingle();
         }
     }

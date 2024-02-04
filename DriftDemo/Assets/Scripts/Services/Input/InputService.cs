@@ -31,17 +31,7 @@ namespace Services.Input
             actionMap.HandBrake.performed += OnHandbrakePerformed;
             actionMap.HandBrake.canceled += OnHandbrakeCancelled;
         }
-        public void Dispose()
-        {
-            _inputActions.Disable();
-            PlayerInput.GameplayActionMapActions actionMap = _inputActions.GameplayActionMap;
-            actionMap.MotorControl.performed -= OnMotorControlPerformed;
-            actionMap.MotorControl.canceled -= OnMotorControlCancelled;
-            actionMap.Steering.performed -= OnSteeringPerformed;
-            actionMap.Steering.canceled -= OnSteeringCancelled;
-            actionMap.HandBrake.performed -= OnHandbrakePerformed;
-            actionMap.HandBrake.canceled -= OnHandbrakeCancelled;
-        }
+        public void Dispose() => DisableInput();
 
         private void OnMotorControlPerformed(InputAction.CallbackContext callbackContext) 
             => _treadleInput = callbackContext.ReadValue<float>();
@@ -60,6 +50,18 @@ namespace Services.Input
 
         private void OnHandbrakeCancelled(InputAction.CallbackContext callbackContext)
             => _handbrakeInput = false;
+
+        public void DisableInput()
+        {
+            _inputActions.Disable();
+            PlayerInput.GameplayActionMapActions actionMap = _inputActions.GameplayActionMap;
+            actionMap.MotorControl.performed -= OnMotorControlPerformed;
+            actionMap.MotorControl.canceled -= OnMotorControlCancelled;
+            actionMap.Steering.performed -= OnSteeringPerformed;
+            actionMap.Steering.canceled -= OnSteeringCancelled;
+            actionMap.HandBrake.performed -= OnHandbrakePerformed;
+            actionMap.HandBrake.canceled -= OnHandbrakeCancelled;
+        }
     }
 }
 

@@ -4124,6 +4124,7 @@ MonoBehaviour:
   _garagePanel: {fileID: 2036194759}
   _shopPanel: {fileID: 2040473595}
   _settingsPanel: {fileID: 2046980468}
+  _cashDisplay: {fileID: 1975127408}
 --- !u!1 &1077310046
 GameObject:
   m_ObjectHideFlags: 0
@@ -7203,6 +7204,7 @@ GameObject:
   - component: {fileID: 1975127405}
   - component: {fileID: 1975127407}
   - component: {fileID: 1975127406}
+  - component: {fileID: 1975127408}
   m_Layer: 5
   m_Name: CurrencyDisplay
   m_TagString: Untagged
@@ -7326,6 +7328,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1975127404}
   m_CullTransparentMesh: 1
+--- !u!114 &1975127408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1975127404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e18fe4c3f313f54b8d156b13ff49109, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _text: {fileID: 1975127406}
 --- !u!1 &1989740639
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,8 +1,8 @@
-﻿using Car;
-using Data;
+﻿using Data;
 using Services;
 using UnityEngine;
 using Zenject;
+using Logic;
 
 namespace Infrastructure
 {
@@ -11,7 +11,9 @@ namespace Infrastructure
         private DiContainer _diContainer;
         private PlayerGarage _playerGarage;
         private ICarPaintingService _carPaintingService;
-        
+
+        private const string TimerPath = "Timer";
+
         [Inject]
         public GameplayFactory(DiContainer diContainer, IPlayerDataService playerDataService, ICarPaintingService carPaintingService) 
         {
@@ -29,8 +31,10 @@ namespace Infrastructure
 
         private GameObject Create(string path)
         {
-            Object emptyPrefab = Resources.Load(path);
-            return _diContainer.InstantiatePrefab(emptyPrefab);
+            Object prefab = Resources.Load(path);
+            return _diContainer.InstantiatePrefab(prefab);
         }
+
+        public Timer CreateTimer() => Create(TimerPath).GetComponent<Timer>();
     }
 }

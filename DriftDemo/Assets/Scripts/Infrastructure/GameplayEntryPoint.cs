@@ -20,5 +20,6 @@ public class GameplayEntryPoint : MonoBehaviour
     {
         GameObject car = _gameplayFactory.CreateCar();
         _cameraFollowService.FollowObject(car);
+        _gameplayFactory.CreateTimer();
     }
 }
