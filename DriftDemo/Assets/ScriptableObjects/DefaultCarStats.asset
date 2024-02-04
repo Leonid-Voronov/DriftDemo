@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3a2ea4e14176e14281a07380da6ad47, type: 3}
+  m_Name: DefaultCarStats
+  m_EditorClassIdentifier: 
+  _motorForce: 1000
+  _breakForce: 5000
+  _maxSteerAngle: 35
+  _maxSpeed: 120
+  _naturalSlowdownPerSecond: 0.998
+  _targetStiffness: 0.5
+  _minimumDriftAngle: 10
+  _minimumDriftSpeed: 10
+  _driftDelay: 0.2
