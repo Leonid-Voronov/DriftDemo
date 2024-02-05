@@ -20,20 +20,22 @@ namespace UI.MainMenu
         private IPlayerDataService _playerDataService;
         private const string GameplaySceneName = "Track2";
         private List<string> _trackNames;
+        private IConvertService _convertService;
 
         [Inject]
-        public void Construct(GameStateMachine gameStateMachine, IConvertService enumStringConvertService, IPlayerDataService playerDataService)
+        public void Construct(GameStateMachine gameStateMachine, IConvertService convertService, IPlayerDataService playerDataService)
         {
             _gameStateMachine = gameStateMachine;
             _playerDataService = playerDataService;
+            _convertService = convertService;
             FillLists();
-            List<CarName> purchasedCarNames = _carNames.Where(c => _playerDataService.PlayerGarage.IsCarPurchased(c)).ToList();
-            AddOptionsToDropdown(_carDropdown, enumStringConvertService.ConvertEnumToString(purchasedCarNames));
-            AddOptionsToDropdown(_mapDropdown, _trackNames);
         }
 
         private void OnEnable()
         {
+            List<CarName> purchasedCarNames = _carNames.Where(c => _playerDataService.PlayerGarage.IsCarPurchased(c)).ToList();
+            AddOptionsToDropdown(_carDropdown, _convertService.ConvertEnumToString(purchasedCarNames));
+            AddOptionsToDropdown(_mapDropdown, _trackNames);
             _startGameButton.onClick.AddListener(OnStartGameButtonPressed);
             _carDropdown.onValueChanged.AddListener(delegate { OnCarDropdownValueChanged(_carDropdown); });
         }
