@@ -14,6 +14,6 @@ namespace Ads
             _adsService = adsService;
         }
 
-        private void OnApplicationPause(bool pause) => IronSource.Agent.onApplicationPause(pause);
+        private void OnApplicationPause(bool pause) => _adsService.OnApplicationPause(pause);
     }
 }
