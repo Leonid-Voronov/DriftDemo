@@ -1,6 +1,5 @@
 ﻿using Data;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Services
 {
@@ -18,8 +17,8 @@ namespace Services
         {
             _allCars = new Dictionary<CarName, PurchasedCar>()
             {
-                [CarName.Car1] = new PurchasedCar(_car1Path, _car1Cost, CarName.Car1),
-                [CarName.Car2] = new PurchasedCar(_car2Path, _car2Cost, CarName.Car2)
+                [CarName.Car1] = new PurchasedCar(_car1Path, _car1Cost, name: CarName.Car1, withSpoiler: false),
+                [CarName.Car2] = new PurchasedCar(_car2Path, _car2Cost, name: CarName.Car2, withSpoiler: false)
             };
         }
 

@@ -70,6 +70,14 @@ namespace Infrastructure
             Container.Bind<ICarPaintingService>()
                 .To<CarPaintingService>()
                 .AsSingle();
+
+            Container.Bind<IDropdownInitializationService>()
+                .To<DropdownInitializationService>()
+                .AsSingle();
+
+            Container.Bind<ICarTuningService>()
+                .To<CarTuningService>()
+                .AsSingle();
         }
 
         private void InstallExtensionBindgings()

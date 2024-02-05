@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+﻿using Car;
 
 namespace Services
 {
     public interface ICarPaintingService
     {
-        void PaintCar(GameObject car);
+        void PaintCar(CarLinks carLinks);
     }
 }

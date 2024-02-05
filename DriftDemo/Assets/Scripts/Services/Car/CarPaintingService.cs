@@ -16,9 +16,8 @@ namespace Services
             _playerGarage = playerDataService.PlayerGarage;
         }
 
-        public void PaintCar(GameObject car)
+        public void PaintCar(CarLinks carLinks)
         {
-            CarLinks carLinks = car.GetComponent<CarLinks>();
             Material newMaterial = carLinks.MaterialsHolder.Materials[_playerGarage.ActiveCar.MaterialIndex];
             List<Material> materials = new List<Material>(carLinks.MeshRenderer.materials);
             materials[0] = newMaterial;
