@@ -3,6 +3,7 @@ using Services;
 using UnityEngine;
 using Zenject;
 using Logic;
+using Car;
 
 namespace Infrastructure
 {
@@ -11,21 +12,26 @@ namespace Infrastructure
         private DiContainer _diContainer;
         private PlayerGarage _playerGarage;
         private ICarPaintingService _carPaintingService;
+        private ICarTuningService _carTuningService;
 
         private const string TimerPath = "Timer";
 
         [Inject]
-        public GameplayFactory(DiContainer diContainer, IPlayerDataService playerDataService, ICarPaintingService carPaintingService) 
+        public GameplayFactory(DiContainer diContainer, IPlayerDataService playerDataService, ICarPaintingService carPaintingService, ICarTuningService carTuningService) 
         {
             _diContainer = diContainer;
             _playerGarage = playerDataService.PlayerGarage;
             _carPaintingService = carPaintingService;
+            _carTuningService = carTuningService;
         }
 
         public GameObject CreateCar()
         {
             GameObject car = Create(_playerGarage.ActiveCar.PrefabPath);
-            _carPaintingService.PaintCar(car);
+            CarLinks carLinks = car.GetComponent<CarLinks>();
+            _carPaintingService.PaintCar(carLinks);
+            _carTuningService.TuneCar(carLinks, _playerGarage.ActiveCar);
+
             return car;
         }
 

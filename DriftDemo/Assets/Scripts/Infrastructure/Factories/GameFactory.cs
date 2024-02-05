@@ -11,6 +11,7 @@ namespace Infrastructure
     {
         private const string CoroutineRunnerPath = "CoroutineRunner";
         private const string LoadingCurtainPath = "LoadingCurtain";
+        private const string AdsPauserPath = "AdsPauser";
         private DiContainer _diContainer;
 
         private List<ISavedProgress> _progressObjects = new List<ISavedProgress>();
@@ -28,6 +29,8 @@ namespace Infrastructure
             _progressObjects.Add(currency);
             return currency;
         }
+
+        public GameObject CreateAdsPauser() => Create(AdsPauserPath);
 
         public ICoroutineRunner CreateCoroutineRunner() => Create(CoroutineRunnerPath).GetComponent<CoroutineRunner>();
         public LoadingCurtain CreateLoadingCurtain() => Create(LoadingCurtainPath).GetComponent<LoadingCurtain>();

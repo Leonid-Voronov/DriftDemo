@@ -12,11 +12,11 @@ namespace Infrastructure
         private IExitableState _activeState;
 
         [Inject]
-        public GameStateMachine(SceneLoader sceneLoader, IGameFactory gameFactory, ILocalStorageService localStorageService)
+        public GameStateMachine(SceneLoader sceneLoader, IGameFactory gameFactory, ILocalStorageService localStorageService, IAdsService adsService)
         {
             _states = new Dictionary<Type, IExitableState>()
             {
-                [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader),
+                [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, adsService),
                 [typeof(LoadProgressState)] = new LoadProgressState(this, localStorageService),
                 [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, gameFactory),
                 [typeof(GameLoopState)] = new GameLoopState(this),

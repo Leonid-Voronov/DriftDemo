@@ -1,5 +1,4 @@
 using Car;
-using Data;
 using Logic;
 using Services;
 using UnityEngine;
@@ -69,6 +68,17 @@ namespace Infrastructure
 
             Container.Bind<ICarPaintingService>()
                 .To<CarPaintingService>()
+                .AsSingle();
+
+            Container.Bind<IDropdownInitializationService>()
+                .To<DropdownInitializationService>()
+                .AsSingle();
+
+            Container.Bind<ICarTuningService>()
+                .To<CarTuningService>()
+                .AsSingle();
+
+            Container.BindInterfacesTo<AdsService>()
                 .AsSingle();
         }
 

@@ -1,4 +1,5 @@
 using Infrastructure;
+using System;
 using UI;
 using UI.Hud;
 using UnityEngine;
@@ -14,9 +15,12 @@ public class HudMediator : MonoBehaviour
     [SerializeField] private TimerDisplay _timerDisplay;
     [SerializeField] private GameObject _finishPanel;
     [SerializeField] private Button _toMenuButton;
+    [SerializeField] private Button _doubleRewardButton; 
     private GameStateMachine _gameStateMachine;
 
     private const string MainMenuName = "MainMenuScene";
+
+    public event EventHandler DoubleRewardButtonPressed;
 
     [Inject]
     public void Construct(GameStateMachine gameStateMachine)
@@ -24,7 +28,12 @@ public class HudMediator : MonoBehaviour
         _gameStateMachine = gameStateMachine;
     }
 
-    private void OnEnable() => _toMenuButton.onClick.AddListener(ToMenuButtonPressed);
+    private void OnEnable()
+    {
+        _toMenuButton.onClick.AddListener(ToMenuButtonPressed);
+        _doubleRewardButton.onClick.AddListener(OnDoubleRewardButtonPressed);
+    }
+
     public void ShowSpeed(float speed) => _speedDisplay.ShowSpeed(speed);
     public void ShowDriftPanel() => _driftPanel.gameObject.SetActive(true);
     public void HideDriftPanel() => _driftPanel.gameObject.SetActive(false);
@@ -33,5 +42,10 @@ public class HudMediator : MonoBehaviour
     public void DisplayTimer(float timer) => _timerDisplay.DisplayTimer(timer);
     public void ShowFinishPanel() => _finishPanel.gameObject.SetActive(true);
     private void ToMenuButtonPressed() => _gameStateMachine.Enter<LoadLevelState, string>(MainMenuName);
-    private void OnDisable() => _toMenuButton.onClick.RemoveListener(ToMenuButtonPressed);
+    private void OnDoubleRewardButtonPressed() => DoubleRewardButtonPressed?.Invoke(this, EventArgs.Empty);
+    private void OnDisable()
+    {
+        _toMenuButton.onClick.RemoveListener(ToMenuButtonPressed);
+        _doubleRewardButton.onClick.RemoveListener(OnDoubleRewardButtonPressed);
+    }
 }

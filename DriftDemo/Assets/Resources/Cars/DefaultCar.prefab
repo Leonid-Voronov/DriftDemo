@@ -171,7 +171,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7096574665496613375
 Transform:
   m_ObjectHideFlags: 0
@@ -601,6 +601,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 187330664660230373}
   _materials: {fileID: 11400000, guid: 1e1a57aa5c123564295d3bf8b9b9ba61, type: 2}
+  _spoilerObject: {fileID: 1507104173581419566}
 --- !u!1 &3962000127133956386
 GameObject:
   m_ObjectHideFlags: 0
