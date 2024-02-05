@@ -33,6 +33,7 @@ namespace Services
         {
             _playerData = JsonConvert.DeserializeObject<PlayerData>(PlayerPrefs.GetString(ProgressKey)) ?? 
                 new PlayerData(_carService, calledFromNew: true);
+
             _gameFactory.ProgressObjects.ForEach(obj => obj.LoadProgress(_playerData));
             return _playerData;
         }

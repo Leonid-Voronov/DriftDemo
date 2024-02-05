@@ -4,6 +4,7 @@ using UnityEngine;
 using Cinemachine;
 using Services.Camera;
 using Services;
+using Logic;
 
 namespace Infrastructure
 {
@@ -11,6 +12,7 @@ namespace Infrastructure
     {
         [SerializeField] private CinemachineVirtualCamera _virtualCamera;
         [SerializeField] private HudMediator _hudMediator;
+        [SerializeField] private StartPoint _startPoint;
         public override void InstallBindings()
         {
             InstallInfrastructureBindings();
@@ -18,6 +20,7 @@ namespace Infrastructure
             InstallCameraBindings();
             InstallHudBindings();
             InstallServiceBindings();
+            InstallLocationBindings();
         }
 
         private void InstallInputBindings()
@@ -58,6 +61,13 @@ namespace Infrastructure
         private void InstallServiceBindings()
         {
             Container.BindInterfacesTo<ScoreService>()
+                .AsSingle();
+        }
+
+        private void InstallLocationBindings()
+        {
+            Container.Bind<StartPoint>()
+                .FromInstance(_startPoint) 
                 .AsSingle();
         }
     }

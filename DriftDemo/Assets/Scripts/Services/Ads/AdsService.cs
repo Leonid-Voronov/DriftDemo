@@ -1,11 +1,12 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Services
 {
     public class AdsService : IAdsService, IDisposable
     {
         private const string AppKey = "";
-        private bool _adAvailable;
+        private bool _adAvailable = true;
 
         public event EventHandler RewardedVideoClosed;
 
@@ -21,6 +22,7 @@ namespace Services
         {
             if (_adAvailable)
                 IronSource.Agent.showRewardedVideo();
+                
         }
 
         private void OnRewardedVideoClosed(IronSourceAdInfo adInfo)

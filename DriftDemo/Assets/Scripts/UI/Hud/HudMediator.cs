@@ -42,7 +42,12 @@ public class HudMediator : MonoBehaviour
     public void DisplayTimer(float timer) => _timerDisplay.DisplayTimer(timer);
     public void ShowFinishPanel() => _finishPanel.gameObject.SetActive(true);
     private void ToMenuButtonPressed() => _gameStateMachine.Enter<LoadLevelState, string>(MainMenuName);
-    private void OnDoubleRewardButtonPressed() => DoubleRewardButtonPressed?.Invoke(this, EventArgs.Empty);
+    private void OnDoubleRewardButtonPressed()
+    {
+        DoubleRewardButtonPressed?.Invoke(this, EventArgs.Empty);
+        _doubleRewardButton.gameObject.SetActive(false);
+    }
+
     private void OnDisable()
     {
         _toMenuButton.onClick.RemoveListener(ToMenuButtonPressed);
