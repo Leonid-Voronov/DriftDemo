@@ -78,6 +78,9 @@ namespace Infrastructure
             Container.Bind<ICarTuningService>()
                 .To<CarTuningService>()
                 .AsSingle();
+
+            Container.BindInterfacesTo<AdsService>()
+                .AsSingle();
         }
 
         private void InstallExtensionBindgings()

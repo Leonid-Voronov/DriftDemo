@@ -2,6 +2,7 @@
 using Data;
 using System.Collections.Generic;
 using Services;
+using UnityEngine;
 
 namespace Infrastructure
 {
@@ -12,6 +13,7 @@ namespace Infrastructure
         ICoroutineRunner CreateCoroutineRunner();
         LoadingCurtain CreateLoadingCurtain();
         List<ISavedProgress> ProgressObjects { get; }
+        GameObject CreateAdsPauser();
     }
 }
 
