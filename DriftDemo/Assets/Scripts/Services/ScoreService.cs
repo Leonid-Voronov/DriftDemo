@@ -22,7 +22,12 @@ namespace Services
         }
 
         public float SessionScore => _sessionScore;
-        public void Initialize() => _mediator.DoubleRewardButtonPressed += DoubleReward;
+        public void Initialize()
+        {
+            _mediator.DoubleRewardButtonPressed += ShowAd;
+            _adsService.RewardedVideoClosed += GiveReward;
+        }
+
         public void AddScore(float delta)
         {
             _sessionScore += delta;
@@ -36,16 +41,14 @@ namespace Services
         public void Dispose()
         {
             ConvertScoreToCash();
-            _mediator.DoubleRewardButtonPressed -= DoubleReward;
+            _mediator.DoubleRewardButtonPressed -= ShowAd;
+            _adsService.RewardedVideoClosed -= GiveReward;
         }
 
         public void ResetCurrentScore() => _currentScore = 0f;
 
-        private void DoubleReward(object sender, EventArgs e)
-        {
-            _adsService.ShowRewardedVideo();
-            _sessionScore *= 2;
-        }
+        private void ShowAd(object sender, EventArgs e) => _adsService.ShowRewardedVideo();
+        private void GiveReward(object sender, EventArgs e) => _sessionScore *= 2;
     }
 }
 
